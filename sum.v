@@ -1,3 +1,5 @@
+(** Proof that 1 + 2 + ... + n = n * (n + 1) / 2 *)
+
 Require Import Coq.Arith.PeanoNat.
 Require Import Coq.Arith.Mult.
 Require Import Coq.Numbers.Natural.Abstract.NDiv.
