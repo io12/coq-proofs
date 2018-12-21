@@ -4,6 +4,8 @@ Require Import Coq.ZArith.Znumtheory.
 Require Import Coq.omega.Omega.
 Require Import Coq.Reals.Reals.
 
+Open Scope Z_scope.
+
 Lemma even_sqr_even :
   forall n:Z, Zeven (n * n) -> Zeven n.
 Proof.
@@ -21,11 +23,11 @@ Lemma even_not_rel_prime :
 Proof.
   intros.
   destruct H as [ H_even_a H_even_b ].
-  assert (H_b_half_exists : exists b_half : Z, b = (2 * b_half)%Z).
+  assert (H_b_half_exists : exists b_half : Z, b = 2 * b_half).
   apply Zeven_ex_iff.
   apply H_even_b.
   destruct H_b_half_exists as [ b_half H_b_half_b_eqn ].
-  assert (H_a_half_exists : exists a_half : Z, a = (2 * a_half)%Z).
+  assert (H_a_half_exists : exists a_half : Z, a = 2 * a_half).
   apply Zeven_ex_iff.
   apply H_even_a.
   destruct H_a_half_exists as [ a_half H_a_half_a_eqn ].
@@ -39,26 +41,25 @@ Proof.
   apply (Zis_gcd_mult _ _ 2 _) in H_rel_prime'.
   apply Zis_gcd_gcd in H_rel_prime.
   apply Zis_gcd_gcd in H_rel_prime'.
-  assert (H_1_eq_2_g : 1%Z = (2 * g)%Z).
+  assert (H_1_eq_2_g : 1 = 2 * g).
   congruence.
-  assert (H_1_neq_2_g : 1%Z <> (2 * g)%Z).
+  assert (H_1_neq_2_g : 1 <> 2 * g).
   omega.
   contradiction.
-  assert (H_g_nonneg : (0 <= g)%Z).
+  assert (H_g_nonneg : 0 <= g).
   rewrite Heqg.
   apply Z.gcd_nonneg.
   omega.
   discriminate.
 Qed.
 
-(* TODO: use type scopes *)
 Theorem sqrt_2_irrat :
   (*
     sqrt(2) = b / a
     2 = (b * b) / (a * a)
     b * b = 2 * a * a
   *)
-  forall a b:Z, a <> 0%Z -> (b * b = 2 * a * a)%Z /\ rel_prime a b -> False.
+  forall a b:Z, a <> 0 -> b * b = 2 * a * a /\ rel_prime a b -> False.
 Proof.
   intros a b H_a_nonzero H.
   destruct H as [ H_b_a_eqn H_rel_prime ].
@@ -73,15 +74,15 @@ Proof.
   apply even_sqr_even.
   apply H_b_sqr_even.
   clear H_b_sqr_even.
-  assert (H_c_exists : exists c : Z, b = (2 * c)%Z).
+  assert (H_c_exists : exists c : Z, b = 2 * c).
   apply Zeven_ex_iff.
   apply H_b_even.
   destruct H_c_exists as [ c H_b_c_eqn ].
-  assert (H_c_a_eqn : (2 * c * c)%Z = (a * a)%Z).
+  assert (H_c_a_eqn : 2 * c * c = a * a).
   rewrite <- (Z.mul_cancel_l _ _ 2).
   rewrite Z.mul_comm.
   rewrite <- H_b_c_eqn.
-  replace ((b * c * 2)%Z) with ((b * (2 * c))%Z) by ring.
+  replace (b * c * 2) with (b * (2 * c)) by ring.
   rewrite <- H_b_c_eqn.
   rewrite Z.mul_assoc.
   apply H_b_a_eqn.
