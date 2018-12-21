@@ -17,7 +17,6 @@ Proof.
   apply H.
 Qed.
 
-(* TODO: think of a better way to do this *)
 Lemma even_not_rel_prime :
   forall a b:Z, Zeven a /\ Zeven b -> ~ rel_prime a b.
 Proof.
